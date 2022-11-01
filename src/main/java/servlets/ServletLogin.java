@@ -26,7 +26,22 @@ public class ServletLogin extends HttpServlet {
 
     /* Recebe os dados da URL em paramêtros*/
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { // get envia pela url
-		doPost(request, response);
+		
+		String action = request.getParameter("action");
+		if(action != null && !action.isEmpty() && action.equalsIgnoreCase("logout")) {
+			
+			request.getSession().invalidate(); // invalida a sessão (logout)
+			
+			RequestDispatcher redirect = request.getRequestDispatcher("index.jsp");
+			redirect.forward(request, response);
+			
+		} else { // se não for logout, continua o fluxo
+			
+			doPost(request, response); // tentar acessar por url
+			
+		}
+		
+		
 	}
 	
 	/* Recebe os dados enviados por um formulário  | tudo que vem da tela request | para enviar a resposta request */
@@ -64,7 +79,7 @@ public class ServletLogin extends HttpServlet {
 				
 			}
 			else {
-				RequestDispatcher redirect = request.getRequestDispatcher("/index.jsp"); // retorna a tela index, caso caia no else
+				RequestDispatcher redirect = request.getRequestDispatcher("index.jsp"); // retorna a tela index, caso caia no else
 				request.setAttribute("msg" , "Informe o login e senha corretamente!");
 				redirect.forward(request, response);
 			}
