@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 
 
 <!DOCTYPE html>
@@ -33,7 +33,7 @@
                                     <!-- Page-body start -->
                                     <div class="page-body">
                                         <div class="row">
-                                          <h1>Conteúdo da página</h1>
+                                          <h1>ConteÃºdo da pÃ¡gina</h1>
                                         </div>
                                     </div>
                                     <!-- Page-body end -->

@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,10 +43,10 @@ h1{
 	<input type="hidden" value="<%= request.getParameter("url") %>" name="url">
 	
 		<div class="mb-3">
-			<label class="form-label">Usu·rio</label>
+			<label class="form-label">Usu√°rio</label>
 			<input name="login" type="text" class="form-control" required>
 			<div class="invalid-feedback">
-      			Preencha o campo usu·rio!
+      			Preencha o campo usu√°rio!
     		</div>
 		</div>
 		
