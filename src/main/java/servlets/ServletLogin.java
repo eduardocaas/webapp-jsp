@@ -27,7 +27,7 @@ public class ServletLogin extends HttpServlet {
     /* Recebe os dados da URL em paramêtros*/
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { // get envia pela url
 		
-		String action = request.getParameter("action");
+		String action = request.getParameter("action"); // método na url, definido no jsp
 		if(action != null && !action.isEmpty() && action.equalsIgnoreCase("logout")) {
 			
 			request.getSession().invalidate(); // invalida a sessão (logout)
