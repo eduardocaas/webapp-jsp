@@ -47,6 +47,7 @@ public class ServletLogin extends HttpServlet {
 	/* Recebe os dados enviados por um formulário  | tudo que vem da tela request | para enviar a resposta request */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		request.setCharacterEncoding("UTF-8");
 		String login = request.getParameter("login");
 		String senha = request.getParameter("senha");
 		String url = request.getParameter("url");
