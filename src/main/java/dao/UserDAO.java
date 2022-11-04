@@ -18,6 +18,8 @@ public class UserDAO {
 	
 	public ModelLogin userRegistration(ModelLogin modelLogin) throws Exception {
 		
+		if(modelLogin.isNew()) { // Grava um objeto novo
+		
 		String sql = "INSERT INTO users(login, senha, nome, email) VALUES (?, ?, ?, ?);";
 		PreparedStatement statement = connection.prepareStatement(sql);
 		
@@ -29,6 +31,24 @@ public class UserDAO {
 		statement.execute();
 		connection.commit();
 		
+		}
+		
+		else { // Update
+			
+			String sql = "UPDATE users SET login=?, senha=?, nome=?, email=? WHERE id = " + modelLogin.getId() + ";";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			
+			statement.setString(1, modelLogin.getLogin());
+			statement.setString(2, modelLogin.getSenha());
+			statement.setString(3, modelLogin.getNome());
+			statement.setString(4, modelLogin.getEmail());
+			
+			statement.executeUpdate();
+			
+			connection.commit();
+			
+		}
+		
 		return this.searchUser(modelLogin.getLogin()); // já consulta após gravar
 		
 			
@@ -38,7 +58,7 @@ public class UserDAO {
 		
 		ModelLogin modelLogin = new ModelLogin();
 		
-		String sql = "SELECT * FROM users WHERE upper(login) = upper('"+ login +"')";
+		String sql = "SELECT * FROM users WHERE UPPER(login) = UPPER('"+ login +"')";
 		
 		PreparedStatement statement = connection.prepareStatement(sql);
 		ResultSet result = statement.executeQuery();
@@ -52,6 +72,18 @@ public class UserDAO {
 		}
 		
 		return modelLogin;
+		
+	}
+	
+	public boolean loginValidate(String login) throws Exception{
+		
+		String sql = "SELECT COUNT(1) > 0 AS exist FROM users WHERE UPPER(login) = UPPER('"+ login + "')"; // se count login for maior que 0, retorna TRUE	
+		
+		PreparedStatement statement = connection.prepareStatement(sql);
+		ResultSet result = statement.executeQuery();
+		
+		result.next(); // entra nos resultados
+		return result.getBoolean("exist");
 		
 	}
 	
