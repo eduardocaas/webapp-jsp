@@ -35,6 +35,8 @@ public class ServletUsuario extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		try {
+			
+		String msg = "Operação realizada com sucesso!";
 		
 		request.setCharacterEncoding("UTF-8");
 		String id = request.getParameter("id");
@@ -50,9 +52,17 @@ public class ServletUsuario extends HttpServlet {
 		modelLogin.setLogin(login);
 		modelLogin.setSenha(senha);
 		
-		modelLogin = userDAO.userRegistration(modelLogin);
+		if(userDAO.loginValidate(modelLogin.getLogin()) && modelLogin.getId() == null) { // se já existe o login, e estou tentando gravar um novo usuário (não conflitar com update)
+			
+			msg = "Login já existente, informe outro login!";
+			
+		} else {
+			modelLogin = userDAO.userRegistration(modelLogin);
+		}
 		
-		request.setAttribute("msg", "Operação realizada com sucesso!");
+		
+		
+		request.setAttribute("msg", msg);
 		request.setAttribute("modelLogin", modelLogin); // manter os dados na tela ao enviar formulario, definido também value padrão no jsp usuario
 		RequestDispatcher redirect = request.getRequestDispatcher("principal/usuario.jsp");
 		redirect.forward(request, response);
