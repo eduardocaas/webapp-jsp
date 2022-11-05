@@ -3,7 +3,6 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import connection.SingleConnection;
 import model.ModelLogin;
@@ -31,9 +30,7 @@ public class UserDAO {
 		statement.execute();
 		connection.commit();
 		
-		}
-		
-		else { // Update
+		} else { // Update
 			
 			String sql = "UPDATE users SET login=?, senha=?, nome=?, email=? WHERE id = " + modelLogin.getId() + ";";
 			PreparedStatement statement = connection.prepareStatement(sql);
@@ -50,7 +47,6 @@ public class UserDAO {
 		}
 		
 		return this.searchUser(modelLogin.getLogin()); // já consulta após gravar
-		
 			
 	}
 	
@@ -77,13 +73,13 @@ public class UserDAO {
 	
 	public boolean loginValidate(String login) throws Exception{
 		
-		String sql = "SELECT COUNT(1) > 0 AS exist FROM users WHERE UPPER(login) = UPPER('"+ login + "')"; // se count login for maior que 0, retorna TRUE	
+		String sql = "SELECT COUNT(1) > 0 AS ext FROM users WHERE UPPER(login) = UPPER('"+ login + "')"; // se count login for maior que 0, retorna TRUE	
 		
 		PreparedStatement statement = connection.prepareStatement(sql);
 		ResultSet result = statement.executeQuery();
 		
 		result.next(); // entra nos resultados
-		return result.getBoolean("exist");
+		return result.getBoolean("ext");
 		
 	}
 	
