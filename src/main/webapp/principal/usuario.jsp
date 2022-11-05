@@ -39,9 +39,12 @@
 												<div class="card">
 													<div class="card-block">
 														<h4 class="sub-title">Cadastro de usuário</h4>
-														<form class="form-material" action="<%= request.getContextPath() %>/ServletUsuario" method="post">
+														<form class="form-material" action="<%= request.getContextPath() %>/ServletUsuario" method="post" id="formUser">
+														
+															<input type="hidden" name="act" id="act" value=""></input>
+														
                                                             <div class="form-group form-default form-static-label">
-                                                                <input type="text" name="id" id="id" class="form-control" placeholder="ID" value="${modelLogin.id}" disabled>
+                                                                <input type="text" name="id" id="id" class="form-control" placeholder="ID" value="${modelLogin.id}" readonly="readonly">
                                                                 <span class="form-bar"></span>
                                                                 <label class="float-label">ID</label>
                                                             </div>
@@ -66,7 +69,7 @@
                                                                 <label class="float-label">Senha</label>
                                                             </div>
                                                             
-                                                            <button class="btn waves-effect waves-light btn-primary btn-outline-primary"><i class="icofont icofont-user-alt-3"></i>Novo</button>
+                                                            <button type="button" class="btn waves-effect waves-light btn-primary btn-outline-primary" onclick="clearForm()"><i class="icofont icofont-user-alt-3"></i>Novo</button>
                                                             <button class="btn waves-effect waves-light btn-success btn-outline-success"><i class="icofont icofont-check-circled"></i>Salvar</button>
                 											<button class="btn waves-effect waves-light btn-danger btn-outline-danger"><i class="icofont icofont-eye-alt"></i>Excluir</button>
                
@@ -92,6 +95,23 @@
     
     <jsp:include page="script.jsp"></jsp:include> <!-- javascript -->
     
-</body>
+<script type="text/javascript">
 
+	function clearForm() {
+			
+		let elementos = document.getElementById("formUser").elements; // Retorna os elementos html dentro do form
+		
+		for (p = 0; p < elementos.length; p++){
+			
+			elementos[p].value = '';  // limpar formulario, atribui valor vazio aos campos
+			
+		}
+		
+	}
+	
+	
+
+</script>
+    
+</body>
 </html>
