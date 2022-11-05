@@ -15,10 +15,10 @@ public class ModelLogin implements Serializable {
 	public boolean isNew() {
 		
 		if (this.id == null) {
-			return true;
+			return true; // Inserir novo
 		} 
 		else if (this.id != null && this.id > 0){
-			return false;
+			return false; // Atualizar
 		}
 		
 		return id == null;
