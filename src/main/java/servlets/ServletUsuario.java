@@ -26,13 +26,27 @@ public class ServletUsuario extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { // get - deletar e consultar (boa prática)
 		
-		String act = request.getParameter("act"); // input hidden - usuario.jsp
+		try {
 		
-		if (act != null && !act.isEmpty() && act.equalsIgnoreCase("delete")) {
+			String act = request.getParameter("act"); // input hidden - usuario.jsp
 			
-			String idUser = request.getParameter("id");
-		}
-		
+			if (act != null && !act.isEmpty() && act.equalsIgnoreCase("delete")) {
+				
+				String idUser = request.getParameter("id");
+				userDAO.deleteUser(idUser);
+				request.setAttribute("msg", "Excluído com sucesso!");
+				
+			}
+			
+			request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+			
+			} catch (Exception e) {
+				e.printStackTrace();
+				RequestDispatcher redirect = request.getRequestDispatcher("/error.jsp");
+				request.setAttribute("msg" , e.getMessage());
+				redirect.forward(request, response);
+				
+			}
 		
 	}
 
