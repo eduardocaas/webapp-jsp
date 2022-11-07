@@ -70,8 +70,8 @@
                                                             </div>
                                                             
                                                             <button type="button" class="btn waves-effect waves-light btn-primary btn-outline-primary" onclick="clearForm()"><i class="icofont icofont-user-alt-3"></i>Novo</button>
-                                                            <button class="btn waves-effect waves-light btn-success btn-outline-success"><i class="icofont icofont-check-circled"></i>Salvar</button>
-                											<button class="btn waves-effect waves-light btn-danger btn-outline-danger"><i class="icofont icofont-eye-alt"></i>Excluir</button>
+                                                            <button class="btn waves-effect waves-light btn-success btn-outline-success"><i class="icofont icofont-check-circled"></i>Salvar</button> <!-- por padrão é type submit -->
+                											<button type="button" class="btn waves-effect waves-light btn-danger btn-outline-danger" onclick="deleteForm()"><i class="icofont icofont-eye-alt"></i>Excluir</button> <!-- type button não envia formulário-->
                
                                                         </form>
 													</div>
@@ -108,6 +108,18 @@
 		}
 		
 	}
+	
+	function deleteForm(){
+		
+		if(confirm('Deseja realmente excluir os dados?'));{
+		
+			document.getElementById("formUser").method = 'get'; // mudando para get
+			document.getElementById("act").value = 'delete';
+			document.getElementById("formUser").submit();
+		
+		}
+	}
+	
 	
 	
 
