@@ -36,9 +36,23 @@ public class ServletUsuario extends HttpServlet {
 				userDAO.deleteUser(idUser);
 				request.setAttribute("msg", "Excluído com sucesso!");
 				
+				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+				
+			} 
+			else if (act != null && !act.isEmpty() && act.equalsIgnoreCase("deleteAjax")) { // caso for usado metódo ajax para deletar
+				
+				String idUser = request.getParameter("id");
+				userDAO.deleteUser(idUser);
+				response.getWriter().write("Excluido com sucesso!"); // resposta com ajax, cai na funcão sucess 
+				
+			}
+			else {
+				
+				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+				
 			}
 			
-			request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+			
 			
 			} catch (Exception e) {
 				e.printStackTrace();
