@@ -69,11 +69,12 @@
                                                                 <label class="float-label">Senha</label>
                                                             </div>
                                                             
-                                                            <button type="button" class="btn waves-effect waves-light btn-primary btn-outline-primary" onclick="clearForm();"><i class="icofont icofont-user-alt-3"></i>Novo</button>
-                                                            <button class="btn waves-effect waves-light btn-success btn-outline-success"><i class="icofont icofont-check-circled"></i>Salvar</button> <!-- por padrão é type submit -->
-                											<button type="button" class="btn waves-effect waves-light btn-danger btn-outline-danger" onclick="deleteFormAjax();"><i class="icofont icofont-eye-alt"></i>Excluir</button> <!-- type button não envia formulário-->
-               
-                                                        </form>
+                                                            <button type="button" class="btn btn-outline-primary" onclick="clearForm();"><i class="icofont icofont-user-alt-3"></i>Novo</button>
+                                                            <button class="btn btn-outline-success"><i class="icofont icofont-check-circled"></i>Salvar</button> <!-- por padrão é type submit -->
+                											<button type="button" class="btn btn-outline-secondary" onclick="deleteFormAjax();"><i class="icofont icofont-warning-alt"></i>Excluir</button> <!-- type button não envia formulário-->
+															<button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#ModalUser"><i class="icofont icofont-info-square"></i>Pesquisar</button> <!-- botão modal -->
+															
+														</form>
 													</div>
 												</div>
 											</div>
@@ -93,7 +94,48 @@
         </div>
     </div>
     
-    <jsp:include page="script.jsp"></jsp:include> <!-- javascript -->
+<jsp:include page="script.jsp"></jsp:include> <!-- javascript -->
+    
+<!-- Modal -->
+<div class="modal fade" id="ModalUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Usuários cadastrados</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+					<div class="input-group mb-3">
+						<input type="text" class="form-control" placeholder="Digite o nome" aria-label="nome" id="nameModal" aria-describedby="basic-addon2">
+						<div class="input-group-append">
+							<button class="btn btn-primary" type="button" onclick="searchUser()">Buscar</button>
+						</div>
+					</div>
+					
+					<table class="table">
+					  <thead>
+					    <tr>
+					      <th scope="col">ID</th>
+					      <th scope="col">Nome</th>
+					      <th scope="col">Ver</th>
+					    </tr>
+					  </thead>
+					  <tbody>
+					   
+					  </tbody>
+					</table>
+
+				</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>    
+    
     
 <script type="text/javascript">
 
@@ -113,8 +155,8 @@
 		
 		if(confirm('Deseja realmente excluir os dados?')){
 			
-			var urlAction = document.getElementById('formUser').action; // action do formulario, para usar servlet usuario
-			var idUser = document.getElementById('id').value; // id usuario no formulario
+			let urlAction = document.getElementById('formUser').action; // action do formulario, para usar servlet usuario
+			let idUser = document.getElementById('id').value; // id usuario no formulario
 			
 			$.ajax({
 				
@@ -147,6 +189,32 @@
 			document.getElementById("formUser").submit();
 		
 		}
+	}
+	
+	function searchUser() {
+		
+		let nameModal = document.getElementById('nameModal').value;
+		let urlAction = document.getElementById('formUser').action;
+		
+		if (nameModal != null && nameModal != '' && nameModal.trim() != ''){ // validando se tem valor para fazer busca no banco
+
+			$.ajax({
+				
+				method: "get", // cai no get no servlet
+				url: urlAction,
+				data: "nameModal=" + nameModal + '&act=searchUserAjax',
+				success: function (response) {
+									
+				}
+				
+			}).fail(function(xhr, status, errorThrown ) {// caso de erro, xhr traz detalhes do erro, status do erro, errorThrown exceção de erro
+															
+				alert('Erro ao buscar usuário por nome: ' + xhr.responseText);
+				
+			});
+			
+		}
+		
 	}
 	
 	

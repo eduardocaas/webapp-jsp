@@ -30,7 +30,7 @@ public class ServletUsuario extends HttpServlet {
 		
 			String act = request.getParameter("act"); // input hidden - usuario.jsp
 			
-			if (act != null && !act.isEmpty() && act.equalsIgnoreCase("delete")) {
+			if (act != null && !act.isEmpty() && act.equalsIgnoreCase("delete")) { // delete padrão
 				
 				String idUser = request.getParameter("id");
 				userDAO.deleteUser(idUser);
@@ -39,6 +39,7 @@ public class ServletUsuario extends HttpServlet {
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 				
 			} 
+			
 			else if (act != null && !act.isEmpty() && act.equalsIgnoreCase("deleteAjax")) { // caso for usado metódo ajax para deletar
 				
 				String idUser = request.getParameter("id");
@@ -46,6 +47,15 @@ public class ServletUsuario extends HttpServlet {
 				response.getWriter().write("Excluido com sucesso!"); // resposta com ajax, cai na funcão sucess 
 				
 			}
+			
+			else if (act != null && !act.isEmpty() && act.equalsIgnoreCase("searchUserAjax")) { // metódo de busca ajax (modal)
+				
+				String nameUser = request.getParameter("nameModal");
+				
+				// response.getWriter().write("Excluido com sucesso!"); // resposta com ajax, cai na funcão sucess 
+				
+			}
+			
 			else {
 				
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
