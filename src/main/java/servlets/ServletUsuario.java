@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,6 +9,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dao.UserDAO;
 import model.ModelLogin;
@@ -52,7 +55,12 @@ public class ServletUsuario extends HttpServlet {
 				
 				String nameUser = request.getParameter("nameModal");
 				
-				// response.getWriter().write("Excluido com sucesso!"); // resposta com ajax, cai na funcão sucess 
+				List<ModelLogin> userDataJSON = userDAO.searchUserList(nameUser);
+				
+				ObjectMapper mapper = new ObjectMapper();
+				String json = mapper.writeValueAsString(userDataJSON);
+				
+				response.getWriter().write(json); // resposta com ajax, cai na funcão sucess 
 				
 			}
 			

@@ -115,21 +115,23 @@
 						</div>
 					</div>
 					
-					<table class="table">
-					  <thead>
-					    <tr>
-					      <th scope="col">ID</th>
-					      <th scope="col">Nome</th>
-					      <th scope="col">Ver</th>
-					    </tr>
-					  </thead>
-					  <tbody>
+					<div style="height: 400px; overflow: scroll;"> <!-- scroll automático, muitos registros -->
+					  <table class="table" id="modalTable">
+					    <thead>
+					      <tr>
+					        <th scope="col">ID</th>
+					        <th scope="col">Nome</th>
+					        <th scope="col">Ver</th>
+					      </tr>
+					    </thead>
+					    <tbody>
 					   
-					  </tbody>
-					</table>
-
-				</div>
+					    </tbody>
+					  </table>
+					</div>
+				  </div>
       <div class="modal-footer">
+      	<span id="modalResults"></span>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
       </div>
     </div>
@@ -204,7 +206,19 @@
 				url: urlAction,
 				data: "nameModal=" + nameModal + '&act=searchUserAjax',
 				success: function (response) {
-									
+					
+					let json = JSON.parse(response); // converte pra JSON
+				
+					$('#modalTable > tbody > tr').remove(); // remove todas as linhas antes da consulta, para limpar a tabela
+					
+					for(let i = 0; i < json.length; i++){
+						
+						$('#modalTable > tbody').append('<tr> <td>' + json[i].id + '</td> <td>' + json[i].nome + '</td> <td><button type="button" class="btn btn-info">Ver</button></td> </tr>');									
+						
+					}
+					
+					document.getElementById('modalResults').textContent = 'Total de registros: ' + json.length;
+					
 				}
 				
 			}).fail(function(xhr, status, errorThrown ) {// caso de erro, xhr traz detalhes do erro, status do erro, errorThrown exceção de erro
