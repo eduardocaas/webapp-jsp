@@ -213,7 +213,7 @@
 					
 					for(let i = 0; i < json.length; i++){
 						
-						$('#modalTable > tbody').append('<tr> <td>' + json[i].id + '</td> <td>' + json[i].nome + '</td> <td><button type="button" class="btn btn-info">Ver</button></td> </tr>');									
+						$('#modalTable > tbody').append('<tr> <td>' + json[i].id + '</td> <td>' + json[i].nome + '</td> <td><button onclick="viewUser(' + json[i].id + ');" type="button" class="btn btn-info">Ver</button></td> </tr>');									
 						
 					}
 					
@@ -228,6 +228,13 @@
 			});
 			
 		}
+		
+	}
+	
+	function viewUser(id){
+		
+		let urlAction = document.getElementById('formUser').action;
+		window.location.href = urlAction + '?act=viewModalUser&id=' + id; // executa get, redireciona a servlet, com parametros
 		
 	}
 	

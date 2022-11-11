@@ -64,6 +64,16 @@ public class ServletUsuario extends HttpServlet {
 				
 			}
 			
+			else if (act != null && !act.isEmpty() && act.equalsIgnoreCase("viewModalUser")) {
+				String id = request.getParameter("id");
+				
+				ModelLogin modelLogin = userDAO.searchUserID(id);
+				
+				request.setAttribute("modelLogin", modelLogin);
+				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+								
+			}	
+			
 			else {
 				
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);

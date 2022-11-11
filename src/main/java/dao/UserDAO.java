@@ -99,6 +99,28 @@ public class UserDAO {
 		
 	}
 	
+	public ModelLogin searchUserID(String id) throws Exception { // retorna um ModelLogin
+			
+			ModelLogin modelLogin = new ModelLogin();
+			
+			String sql = "SELECT * FROM users WHERE id = ?";
+			
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setLong(1, Long.parseLong(id));
+			ResultSet result = statement.executeQuery();
+			
+			while (result.next()) {
+				modelLogin.setId(result.getLong("id"));
+				modelLogin.setLogin(result.getString("login"));
+				modelLogin.setSenha(result.getString("senha"));
+				modelLogin.setNome(result.getString("nome"));
+				modelLogin.setEmail(result.getString("email"));
+			}
+			
+			return modelLogin;
+			
+		}
+	
 	public boolean loginValidate(String login) throws Exception{
 		
 		String sql = "SELECT COUNT(1) > 0 AS ext FROM users WHERE UPPER(login) = UPPER('"+ login + "')"; // se count login for maior que 0, retorna TRUE	
