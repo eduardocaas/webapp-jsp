@@ -83,7 +83,26 @@
 										</div>
 
 										<span id="msg">${msg}</span>
-
+										<div style="height: 400px; overflow: scroll;"> <!-- scroll automático, muitos registros -->
+											<table class="table" id="usersTable">
+												<thead>
+													<tr>
+														<th scope="col">ID</th>
+														<th scope="col">Nome</th>
+														<th scope="col">Ver</th>
+													</tr>
+												</thead>
+												<tbody>
+													<c:forEach items="${modelLoginList}" var="ml">
+														<tr>
+															<td><c:out value="${ml.id}"></c:out></td>
+															<td><c:out value="${ml.nome}"></c:out></td>
+															<td><button class="btn btn-primary" type="button">Ver</button></td>
+														</tr>
+													</c:forEach>
+												</tbody>
+											</table>
+										</div>
 									</div>
 									<!-- Page-body end -->
                                 </div>

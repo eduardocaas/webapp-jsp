@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -16,7 +17,7 @@ import dao.UserDAO;
 import model.ModelLogin;
 
 
-@WebServlet("/ServletUsuario")
+@WebServlet(urlPatterns = {"/ServletUsuario"}) /* Mapeamento de URL que vem da tela */
 public class ServletUsuario extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
@@ -31,7 +32,7 @@ public class ServletUsuario extends HttpServlet {
 		
 		try {
 		
-			String act = request.getParameter("act"); // input hidden - usuario.jsp
+			String act = request.getParameter("act"); // input hidden - usuario.jsp,   na url onde estiver act, recebe os parametros atribuidos, ex: act=ListUser
 			
 			if (act != null && !act.isEmpty() && act.equalsIgnoreCase("delete")) { // delete padrão
 				
@@ -72,7 +73,17 @@ public class ServletUsuario extends HttpServlet {
 				request.setAttribute("modelLogin", modelLogin);
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 								
-			}	
+			}
+			
+			else if (act != null && !act.isEmpty() && act.equalsIgnoreCase("listUser")) { // mostra lista de usuários ao entrar no usuario.jsp
+				
+				List<ModelLogin> modelLoginList = userDAO.returnUserList();
+				
+				request.setAttribute("msg", "Usuários carregados");
+				request.setAttribute("modelLoginList", modelLoginList);  // parametro a ser usado dentro do jsp, apenas modelLogin é do form
+				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response); // carrega os usuários e envia para tela
+				
+			}
 			
 			else {
 				

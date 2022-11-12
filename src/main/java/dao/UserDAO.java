@@ -52,7 +52,32 @@ public class UserDAO {
 			
 	}
 	
-	public List<ModelLogin> searchUserList(String name) throws Exception {
+	public List<ModelLogin> returnUserList() throws Exception { // listar usuário, ao acessar pag jsp
+			
+			List<ModelLogin> modelLogins = new ArrayList<ModelLogin>();
+			
+			String sql = "SELECT * FROM users";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			ResultSet result = statement.executeQuery();
+			
+			while (result.next()) {
+				
+				ModelLogin modelLogin = new ModelLogin();
+				modelLogin.setId(result.getLong("id"));
+				modelLogin.setLogin(result.getString("login"));
+				// modelLogin.setSenha(result.getString("senha"));
+				modelLogin.setNome(result.getString("nome"));
+				modelLogin.setEmail(result.getString("email"));
+				
+				modelLogins.add(modelLogin);
+				
+			}
+			
+			return modelLogins;
+			
+		}
+	
+	public List<ModelLogin> searchUserList(String name) throws Exception { // modal
 		
 		List<ModelLogin> modelLogins = new ArrayList<ModelLogin>();
 		
