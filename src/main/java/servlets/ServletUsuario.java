@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.processing.SupportedOptions;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,7 +19,7 @@ import model.ModelLogin;
 
 
 @WebServlet(urlPatterns = {"/ServletUsuario"}) /* Mapeamento de URL que vem da tela */
-public class ServletUsuario extends HttpServlet {
+public class ServletUsuario extends /*HttpServlet*/ ServletGenericUtil { // httpservlet herdado de servletgenericutil
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -40,7 +41,12 @@ public class ServletUsuario extends HttpServlet {
 				userDAO.deleteUser(idUser);
 				request.setAttribute("msg", "Excluído com sucesso!");
 				
+				List<ModelLogin> modelLoginList = userDAO.returnUserList(super.getUserLogado(request)); // recarregar tabela novamente
+				request.setAttribute("modelLoginList", modelLoginList); 
+				
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+				
+				
 				
 			} 
 			
@@ -56,7 +62,7 @@ public class ServletUsuario extends HttpServlet {
 				
 				String nameUser = request.getParameter("nameModal");
 				
-				List<ModelLogin> userDataJSON = userDAO.searchUserList(nameUser);
+				List<ModelLogin> userDataJSON = userDAO.searchUserList(nameUser, super.getUserLogado(request));
 				
 				ObjectMapper mapper = new ObjectMapper();
 				String json = mapper.writeValueAsString(userDataJSON);
@@ -68,16 +74,21 @@ public class ServletUsuario extends HttpServlet {
 			else if (act != null && !act.isEmpty() && act.equalsIgnoreCase("viewModalUser")) {
 				String id = request.getParameter("id");
 				
-				ModelLogin modelLogin = userDAO.searchUserID(id);
+				ModelLogin modelLogin = userDAO.searchUserID(id, super.getUserLogado(request));
+				
+				List<ModelLogin> modelLoginList = userDAO.returnUserList(super.getUserLogado(request)); // recarregar tabela novamente
+				request.setAttribute("modelLoginList", modelLoginList); 
 				
 				request.setAttribute("modelLogin", modelLogin);
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+				
+				
 								
 			}
 			
 			else if (act != null && !act.isEmpty() && act.equalsIgnoreCase("listUser")) { // mostra lista de usuários ao entrar no usuario.jsp
 				
-				List<ModelLogin> modelLoginList = userDAO.returnUserList();
+				List<ModelLogin> modelLoginList = userDAO.returnUserList(super.getUserLogado(request));
 				
 				request.setAttribute("msg", "Usuários carregados");
 				request.setAttribute("modelLoginList", modelLoginList);  // parametro a ser usado dentro do jsp, apenas modelLogin é do form
@@ -87,7 +98,11 @@ public class ServletUsuario extends HttpServlet {
 			
 			else {
 				
+				List<ModelLogin> modelLoginList = userDAO.returnUserList(super.getUserLogado(request)); // recarregar tabela novamente
+				request.setAttribute("modelLoginList", modelLoginList); 
+				
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+				
 				
 			}
 			
@@ -136,10 +151,13 @@ public class ServletUsuario extends HttpServlet {
 				msg = "Atualizado com sucesso!";
 			}
 			
-			modelLogin = userDAO.userRegistration(modelLogin);
+			modelLogin = userDAO.userRegistration(modelLogin, super.getUserLogado(request));
 		}
 		
 		
+		
+		List<ModelLogin> modelLoginList = userDAO.returnUserList(super.getUserLogado(request)); // recarregar tabela novamente
+		request.setAttribute("modelLoginList", modelLoginList);
 		
 		request.setAttribute("msg", msg);
 		request.setAttribute("modelLogin", modelLogin); // manter os dados na tela ao enviar formulario, definido também value padrão no jsp usuario

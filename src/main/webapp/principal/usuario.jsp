@@ -97,7 +97,7 @@
 														<tr>
 															<td><c:out value="${ml.id}"></c:out></td>
 															<td><c:out value="${ml.nome}"></c:out></td>
-															<td><button class="btn btn-primary" type="button">Ver</button></td>
+															<td><a class="btn btn-primary" href="<%= request.getContextPath() %>/ServletUsuario?act=viewModalUser&id=${ml.id}">Ver</a></td>
 														</tr>
 													</c:forEach>
 												</tbody>

@@ -17,17 +17,20 @@ public class UserDAO {
 		connection = SingleConnection.getConnection();
 	}
 	
-	public ModelLogin userRegistration(ModelLogin modelLogin) throws Exception {
+	// userLogado -> consultas trazem apenas usuários cadastrados pelo usuário logado, inserções levam o id do atual usuário logado, (user_cadastro_id)
+	
+	public ModelLogin userRegistration(ModelLogin modelLogin, Long userLogado) throws Exception {
 		
 		if(modelLogin.isNew()) { // Grava um objeto novo
 		
-		String sql = "INSERT INTO users(login, senha, nome, email) VALUES (?, ?, ?, ?);";
+		String sql = "INSERT INTO users(login, senha, nome, email, user_cadastro_id) VALUES (?, ?, ?, ?, ?);";
 		PreparedStatement statement = connection.prepareStatement(sql);
 		
 		statement.setString(1, modelLogin.getLogin());
 		statement.setString(2, modelLogin.getSenha());
 		statement.setString(3, modelLogin.getNome());
 		statement.setString(4, modelLogin.getEmail());
+		statement.setLong(5, userLogado);
 		
 		statement.execute();
 		connection.commit();
@@ -42,21 +45,20 @@ public class UserDAO {
 			statement.setString(3, modelLogin.getNome());
 			statement.setString(4, modelLogin.getEmail());
 			
-			statement.executeUpdate();
-			
+			statement.executeUpdate();			
 			connection.commit();
 			
 		}
 		
-		return this.searchUser(modelLogin.getLogin()); // já consulta após gravar
+		return this.searchUser(modelLogin.getLogin(), userLogado); // já consulta após gravar
 			
 	}
 	
-	public List<ModelLogin> returnUserList() throws Exception { // listar usuário, ao acessar pag jsp
+	public List<ModelLogin> returnUserList(Long userLogado) throws Exception { // listar usuário, ao acessar pag jsp
 			
 			List<ModelLogin> modelLogins = new ArrayList<ModelLogin>();
 			
-			String sql = "SELECT * FROM users";
+			String sql = "SELECT * FROM users WHERE useradmin = FALSE AND user_cadastro_id = " + userLogado + " ORDER BY id";
 			PreparedStatement statement = connection.prepareStatement(sql);
 			ResultSet result = statement.executeQuery();
 			
@@ -77,13 +79,14 @@ public class UserDAO {
 			
 		}
 	
-	public List<ModelLogin> searchUserList(String name) throws Exception { // modal
+	public List<ModelLogin> searchUserList(String name, Long userLogado) throws Exception { // modal
 		
 		List<ModelLogin> modelLogins = new ArrayList<ModelLogin>();
 		
-		String sql = "SELECT * FROM users WHERE UPPER(nome) LIKE UPPER(?)";
+		String sql = "SELECT * FROM users WHERE UPPER(nome) LIKE UPPER(?) AND useradmin = FALSE AND user_cadastro_id = ? ORDER BY nome";
 		PreparedStatement statement = connection.prepareStatement(sql);
 		statement.setString(1, "%" + name + "%");
+		statement.setLong(2, userLogado);
 		ResultSet result = statement.executeQuery();
 		
 		while (result.next()) {
@@ -103,7 +106,49 @@ public class UserDAO {
 		
 	}
 	
-	public ModelLogin searchUser(String login) throws Exception { // retorna um ModelLogin
+	public ModelLogin searchUser(String login, Long userLogado) throws Exception { // retorna um ModelLogin
+		
+		ModelLogin modelLogin = new ModelLogin();
+		
+		String sql = "SELECT * FROM users WHERE UPPER(login) = UPPER('"+ login +"') AND useradmin = FALSE AND user_cadastro_id = " + userLogado;
+		
+		PreparedStatement statement = connection.prepareStatement(sql);
+		ResultSet result = statement.executeQuery();
+		
+		while (result.next()) {
+			modelLogin.setId(result.getLong("id"));
+			modelLogin.setLogin(result.getString("login"));
+			modelLogin.setSenha(result.getString("senha"));
+			modelLogin.setNome(result.getString("nome"));
+			modelLogin.setEmail(result.getString("email"));
+		}
+		
+		return modelLogin;
+		
+	}
+	
+	public ModelLogin searchUser(String login) throws Exception { // retorna um ModelLogin, consultado somente por login para verificar usuario logado
+			
+			ModelLogin modelLogin = new ModelLogin();
+			
+			String sql = "SELECT * FROM users WHERE UPPER(login) = UPPER('"+ login +"') AND useradmin = FALSE";
+			
+			PreparedStatement statement = connection.prepareStatement(sql);
+			ResultSet result = statement.executeQuery();
+			
+			while (result.next()) {
+				modelLogin.setId(result.getLong("id"));
+				modelLogin.setLogin(result.getString("login"));
+				modelLogin.setSenha(result.getString("senha"));
+				modelLogin.setNome(result.getString("nome"));
+				modelLogin.setEmail(result.getString("email"));
+			}
+			
+			return modelLogin;
+			
+		}
+	
+	public ModelLogin searchUserLogged(String login) throws Exception { // retorna um ModelLogin, consultado somente por login para verificar usuario logado, 
 		
 		ModelLogin modelLogin = new ModelLogin();
 		
@@ -124,14 +169,15 @@ public class UserDAO {
 		
 	}
 	
-	public ModelLogin searchUserID(String id) throws Exception { // retorna um ModelLogin
+	public ModelLogin searchUserID(String id, Long userLogado) throws Exception { // retorna um ModelLogin
 			
 			ModelLogin modelLogin = new ModelLogin();
 			
-			String sql = "SELECT * FROM users WHERE id = ?";
+			String sql = "SELECT * FROM users WHERE id = ? AND useradmin = FALSE and user_cadastro_id = ?";
 			
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setLong(1, Long.parseLong(id));
+			statement.setLong(2, userLogado);
 			ResultSet result = statement.executeQuery();
 			
 			while (result.next()) {
@@ -160,7 +206,7 @@ public class UserDAO {
 	
 	public void deleteUser(String idUser) throws Exception {
 		
-		String sql = "DELETE FROM users WHERE id = ?;";
+		String sql = "DELETE FROM users WHERE id = ? AND useradmin = FALSE;";
 		PreparedStatement statement = connection.prepareStatement(sql);
 		statement.setLong(1, Long.parseLong(idUser));
 		statement.executeUpdate();
