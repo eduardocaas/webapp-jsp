@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.LoginDAO;
+import dao.UserDAO;
 import model.ModelLogin;
 
 /* O chamado controller são as servlets */
@@ -19,6 +20,7 @@ public class ServletLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private LoginDAO loginDAO = new LoginDAO();
+	private UserDAO userDAO = new UserDAO();
        
     public ServletLogin() {
        
@@ -62,7 +64,10 @@ public class ServletLogin extends HttpServlet {
 				
 				if(loginDAO.validateAuth(modelLogin)){ // simulando login
 					
+					modelLogin = userDAO.searchUserLogged(login);
+					
 					request.getSession().setAttribute("usuario", modelLogin.getLogin()); // usuario logado na sessão (só salva o login)
+					request.getSession().setAttribute("isAdmin", modelLogin.getUseradmin()); // para controle de acesso de admins (ex: jsp)
 					
 					if (url == null || url.equals("null")) {
 						url = "principal/principal.jsp";
