@@ -130,6 +130,7 @@ public class ServletUsuario extends /*HttpServlet*/ ServletGenericUtil { // http
 		String login = request.getParameter("login");
 		String email = request.getParameter("email");
 		String senha = request.getParameter("senha");
+		String perfil = request.getParameter("perfil");
 		
 		ModelLogin modelLogin = new ModelLogin();
 		
@@ -138,6 +139,7 @@ public class ServletUsuario extends /*HttpServlet*/ ServletGenericUtil { // http
 		modelLogin.setEmail(email);
 		modelLogin.setLogin(login);
 		modelLogin.setSenha(senha);
+		modelLogin.setPerfil(perfil);
 		
 		if (userDAO.loginValidate(modelLogin.getLogin()) && modelLogin.getId() == null) { // se já existe o login, e estou tentando gravar um novo usuário (não conflitar com update)
 			

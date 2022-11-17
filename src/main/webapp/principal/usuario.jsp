@@ -50,21 +50,48 @@
                                                                 <span class="form-bar"></span>
                                                                 <label class="float-label">ID</label>
                                                             </div>
+                                                            
                                                             <div class="form-group form-default">
                                                                 <input type="text" name="nome" id="nome" class="form-control" required="required" value="${modelLogin.nome}">
                                                                 <span class="form-bar"></span>
                                                                 <label class="float-label">Nome</label>
                                                             </div>
+                                                            
                                                             <div class="form-group form-default">
                                                                 <input type="text" name="email" id="email" class="form-control" required="required" autocomplete="off" value="${modelLogin.email}">
                                                                 <span class="form-bar"></span>
                                                                 <label class="float-label">E-mail</label>
                                                             </div>
+                                                            
+                                                            <div class="form-group form-default form-static-label">
+	                                                            <select class="form-control" aria-label="Default select example" name="perfil">
+																  <option disabled="disabled">Selecione o Perfil</option>
+																  <option value="ADMIN" <% if (request.getSession().getAttribute("perfil").toString() == "ADMIN") {
+																	  out.print(" ");
+																	  out.print("selected=\"selected\" ");
+																	  out.print(" ");																	  
+																  }%> >Admin</option>  <!-- enum -->
+																  <option value="AUXILIAR" <% if (request.getSession().getAttribute("perfil").toString() == "AUXILIAR") {
+																	  out.print(" ");
+																	  out.print("selected=\"selected\" ");
+																	  out.print(" ");																	  
+																  }%> >Auxiliar</option>
+																  <option value="OPERADOR" <% if (request.getSession().getAttribute("perfil").toString() == "OPERADOR") {
+																	  out.print(" ");
+																	  out.print("selected=\"selected\" ");
+																	  out.print(" ");																	  
+																  }%> >Operador</option>
+																</select>
+																<span class="form-bar"></span>
+                                                                <label class="float-label">Perfil</label>
+                                                            </div>
+                                                            
                                                             <div class="form-group form-default">
                                                                 <input type="text" name="login" id="login" class="form-control" required="required" autocomplete="off" value="${modelLogin.login}">
                                                                 <span class="form-bar"></span>
                                                                 <label class="float-label">Login</label>
                                                             </div>
+                                                            
                                                             <div class="form-group form-default">
                                                                 <input type="password" name="senha" id="senha" class="form-control" required="required" autocomplete="off" value="${modelLogin.senha}">
                                                                 <span class="form-bar"></span>
