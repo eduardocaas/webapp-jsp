@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.processing.SupportedOptions;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.UserDAO;
 import model.ModelLogin;
 
-
+@MultipartConfig // para arquivos ex: foto de usuario
 @WebServlet(urlPatterns = {"/ServletUsuario"}) /* Mapeamento de URL que vem da tela */
 public class ServletUsuario extends /*HttpServlet*/ ServletGenericUtil { // httpservlet herdado de servletgenericutil
 	
@@ -131,6 +132,7 @@ public class ServletUsuario extends /*HttpServlet*/ ServletGenericUtil { // http
 		String email = request.getParameter("email");
 		String senha = request.getParameter("senha");
 		String perfil = request.getParameter("perfil");
+		String sexo = request.getParameter("sexo");
 		
 		ModelLogin modelLogin = new ModelLogin();
 		
@@ -140,6 +142,7 @@ public class ServletUsuario extends /*HttpServlet*/ ServletGenericUtil { // http
 		modelLogin.setLogin(login);
 		modelLogin.setSenha(senha);
 		modelLogin.setPerfil(perfil);
+		modelLogin.setSexo(sexo);
 		
 		if (userDAO.loginValidate(modelLogin.getLogin()) && modelLogin.getId() == null) { // se já existe o login, e estou tentando gravar um novo usuário (não conflitar com update)
 			

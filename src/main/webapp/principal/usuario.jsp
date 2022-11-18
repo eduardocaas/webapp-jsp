@@ -1,3 +1,4 @@
+<%@page import="model.ModelLogin"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
@@ -41,7 +42,7 @@
 												<div class="card">
 													<div class="card-block">
 														<h4 class="sub-title">Cadastro de usuário</h4>
-														<form class="form-material" action="<%= request.getContextPath() %>/ServletUsuario" method="post" id="formUser">
+														<form class="form-material" enctype="multipart/form-data" action="<%= request.getContextPath() %>/ServletUsuario" method="post" id="formUser"> <!-- enctype, para uploads, apenas post  -->
 														
 															<input type="hidden" name="act" id="act" value=""></input>
 														
@@ -51,13 +52,13 @@
                                                                 <label class="float-label">ID</label>
                                                             </div>
                                                             
-                                                            <div class="form-group form-default">
+                                                            <div class="form-group form-info">
                                                                 <input type="text" name="nome" id="nome" class="form-control" required="required" value="${modelLogin.nome}">
                                                                 <span class="form-bar"></span>
                                                                 <label class="float-label">Nome</label>
                                                             </div>
                                                             
-                                                            <div class="form-group form-default">
+                                                            <div class="form-group form-info">
                                                                 <input type="text" name="email" id="email" class="form-control" required="required" autocomplete="off" value="${modelLogin.email}">
                                                                 <span class="form-bar"></span>
                                                                 <label class="float-label">E-mail</label>
@@ -66,17 +67,29 @@
                                                             <div class="form-group form-default form-static-label">
 	                                                            <select class="form-control" aria-label="Default select example" name="perfil">
 																  <option disabled="disabled">Selecione o Perfil</option>
-																  <option value="ADMIN" <% if (request.getSession().getAttribute("perfil").toString() == "ADMIN") {
+																  <option value="ADMIN" <% 
+																  
+																  ModelLogin modelLogin = (ModelLogin) request.getAttribute("modelLogin");
+																 
+																  if (modelLogin != null && modelLogin.getPerfil().equals("ADMIN")) {
 																	  out.print(" ");
 																	  out.print("selected=\"selected\" ");
 																	  out.print(" ");																	  
 																  }%> >Admin</option>  <!-- enum -->
-																  <option value="AUXILIAR" <% if (request.getSession().getAttribute("perfil").toString() == "AUXILIAR") {
+																  <option value="AUXILIAR" <%
+																  
+																  modelLogin = (ModelLogin) request.getAttribute("modelLogin");
+																  
+																  if (modelLogin != null && modelLogin.getPerfil().equals("AUXILIAR")) {
 																	  out.print(" ");
 																	  out.print("selected=\"selected\" ");
 																	  out.print(" ");																	  
 																  }%> >Auxiliar</option>
-																  <option value="OPERADOR" <% if (request.getSession().getAttribute("perfil").toString() == "OPERADOR") {
+																  <option value="OPERADOR" <% 
+																  
+																  modelLogin = (ModelLogin) request.getAttribute("modelLogin");
+																  
+																  if (modelLogin != null && modelLogin.getPerfil().equals("OPERADOR")) {
 																	  out.print(" ");
 																	  out.print("selected=\"selected\" ");
 																	  out.print(" ");																	  
@@ -86,13 +99,38 @@
                                                                 <label class="float-label">Perfil</label>
                                                             </div>
                                                             
-                                                            <div class="form-group form-default">
+                                                            <div class="form-group form-default form-static-label">
+                                                            	<input type="radio" name="sexo" value="MASCULINO" checked="checked" <%
+                                                            	
+																modelLogin = (ModelLogin) request.getAttribute("modelLogin"); 
+                                                            	
+                                                            	if (modelLogin != null && modelLogin.getSexo().equals("MASCULINO")) {
+																	  out.print(" ");
+																	  out.print("checked=\"checked\" ");
+																	  out.print(" ");																	  
+																  }
+                                                            	
+                                                            	%>> Masculino</>
+                                                            	<input type="radio" name="sexo" value="FEMININO" <%
+                                                            	
+                                                            	modelLogin = (ModelLogin) request.getAttribute("modelLogin"); 
+                                                            	
+                                                            	if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
+																	  out.print(" ");
+																	  out.print("checked=\"checked\" ");
+																	  out.print(" ");																	  
+																  }                                                           	
+                                                            	%>> Feminino</>
+                                                            
+                                                            </div>
+                                                            
+                                                            <div class="form-group form-info">
                                                                 <input type="text" name="login" id="login" class="form-control" required="required" autocomplete="off" value="${modelLogin.login}">
                                                                 <span class="form-bar"></span>
                                                                 <label class="float-label">Login</label>
                                                             </div>
                                                             
-                                                            <div class="form-group form-default">
+                                                            <div class="form-group form-info">
                                                                 <input type="password" name="senha" id="senha" class="form-control" required="required" autocomplete="off" value="${modelLogin.senha}">
                                                                 <span class="form-bar"></span>
                                                                 <label class="float-label">Senha</label>

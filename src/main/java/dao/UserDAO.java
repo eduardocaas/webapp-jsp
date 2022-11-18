@@ -23,7 +23,7 @@ public class UserDAO {
 		
 		if(modelLogin.isNew()) { // Grava um objeto novo
 		
-		String sql = "INSERT INTO users(login, senha, nome, email, user_cadastro_id, perfil) VALUES (?, ?, ?, ?, ?, ?);";
+		String sql = "INSERT INTO users(login, senha, nome, email, user_cadastro_id, perfil, sexo) VALUES (?, ?, ?, ?, ?, ?, ?);";
 		PreparedStatement statement = connection.prepareStatement(sql);
 		
 		statement.setString(1, modelLogin.getLogin());
@@ -32,13 +32,14 @@ public class UserDAO {
 		statement.setString(4, modelLogin.getEmail());
 		statement.setLong(5, userLogado);
 		statement.setString(6, modelLogin.getPerfil());
+		statement.setString(7, modelLogin.getSexo());
 		
 		statement.execute();
 		connection.commit();
 		
 		} else { // Update
 			
-			String sql = "UPDATE users SET login=?, senha=?, nome=?, email=?, perfil=? WHERE id = " + modelLogin.getId() + ";";
+			String sql = "UPDATE users SET login=?, senha=?, nome=?, email=?, perfil=?, sexo=? WHERE id = " + modelLogin.getId() + ";";
 			PreparedStatement statement = connection.prepareStatement(sql);
 			
 			statement.setString(1, modelLogin.getLogin());
@@ -46,6 +47,7 @@ public class UserDAO {
 			statement.setString(3, modelLogin.getNome());
 			statement.setString(4, modelLogin.getEmail());
 			statement.setString(5, modelLogin.getPerfil());
+			statement.setString(6, modelLogin.getSexo());
 			
 			statement.executeUpdate();			
 			connection.commit();
@@ -123,6 +125,8 @@ public class UserDAO {
 			modelLogin.setSenha(result.getString("senha"));
 			modelLogin.setNome(result.getString("nome"));
 			modelLogin.setEmail(result.getString("email"));
+			modelLogin.setPerfil(result.getString("perfil"));
+			modelLogin.setSexo(result.getString("sexo"));
 		}
 		
 		return modelLogin;
@@ -144,6 +148,8 @@ public class UserDAO {
 				modelLogin.setSenha(result.getString("senha"));
 				modelLogin.setNome(result.getString("nome"));
 				modelLogin.setEmail(result.getString("email"));
+				modelLogin.setPerfil(result.getString("perfil"));
+				modelLogin.setSexo(result.getString("sexo"));
 			}
 			
 			return modelLogin;
@@ -167,6 +173,7 @@ public class UserDAO {
 			modelLogin.setEmail(result.getString("email"));
 			modelLogin.setUseradmin(result.getBoolean("useradmin"));
 			modelLogin.setPerfil(result.getString("perfil"));
+			modelLogin.setSexo(result.getString("sexo"));
 		}
 		
 		return modelLogin;
@@ -190,6 +197,8 @@ public class UserDAO {
 				modelLogin.setSenha(result.getString("senha"));
 				modelLogin.setNome(result.getString("nome"));
 				modelLogin.setEmail(result.getString("email"));
+				modelLogin.setPerfil(result.getString("perfil"));
+				modelLogin.setSexo(result.getString("sexo"));
 			}
 			
 			return modelLogin;
