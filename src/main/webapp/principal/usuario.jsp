@@ -339,7 +339,7 @@
 		
 		reader.onloadend = function (){
 			
-			preview.src = reader.result; // carrega a foto na tela
+			preview.src = reader.result; // pega o arquivo e joga pro campo de img no html
 			
 		};
 		
