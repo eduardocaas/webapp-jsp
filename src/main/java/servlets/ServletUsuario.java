@@ -1,17 +1,19 @@
 package servlets;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.processing.SupportedOptions;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.tomcat.util.codec.binary.Base64;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -143,6 +145,14 @@ public class ServletUsuario extends /*HttpServlet*/ ServletGenericUtil { // http
 		modelLogin.setSenha(senha);
 		modelLogin.setPerfil(perfil);
 		modelLogin.setSexo(sexo);
+		
+		if (ServletFileUpload.isMultipartContent(request)) { // intercepta arquivos
+			
+			Part part = request.getPart("imgFile"); // pega foto da tela, pelo name
+			byte[] imgFileByte = IOUtils.toByteArray(part.getInputStream()); // converte imagem convertida para byte, IOUtils Apache Commons
+			String imgFileBase64 = new Base64().encodeBase64String(imgFileByte); // converte imagem para string recebendo um byte , Apache Codec Base 64
+			System.out.println(imgFileBase64);
+		}
 		
 		if (userDAO.loginValidate(modelLogin.getLogin()) && modelLogin.getId() == null) { // se já existe o login, e estou tentando gravar um novo usuário (não conflitar com update)
 			

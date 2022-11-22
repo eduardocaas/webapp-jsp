@@ -52,6 +52,13 @@
                                                                 <label class="float-label">ID</label>
                                                             </div>
                                                             
+                                                            <div class="form-group form-default input-group mb-4">
+                                                            	<div class="input-group-prepend">
+                                                            		<img alt="Imagem Usuario" id="imgBase64" src="" width="70px"> <!-- https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png -->
+                                                            	</div>
+                                                            	<input type="file" id=imgFile name="imgFile" accept="image/*" onchange="viewImg('imgBase64' , 'imgFile');" class="form-control-file" style="margin-top: 15px; margin-left: 5px;"> <!-- aceita só imagens, de qualquer formato, invoca função js para aparecer imagem ao lado -->
+                                                            </div>
+                                                            
                                                             <div class="form-group form-info">
                                                                 <input type="text" name="nome" id="nome" class="form-control" required="required" value="${modelLogin.nome}">
                                                                 <span class="form-bar"></span>
@@ -324,6 +331,27 @@
 		
 	}
 	
+	function viewImg(imgBase64, imgFile) {
+		
+		var preview = document.getElementById('imgBase64'); // campo img html
+		var imgFile = document.getElementById('imgFile').files[0]; // caso retorne mais de um arquivo pega somente o primeiro
+		var reader = new FileReader();
+		
+		reader.onloadend = function (){
+			
+			preview.src = reader.result; // carrega a foto na tela
+			
+		};
+		
+		if (imgFile) { // se tiver foto sendo carregada
+			
+			reader.readAsDataURL(imgFile); // preview da imagem
+			
+		} else {
+			preview.src = ''; // limpa tela, caso não tiver imagem
+		}
+		
+	}
 	
 	
 
