@@ -40,6 +40,7 @@ public class UserDAO {
 		if (modelLogin.getFoto() != null && !modelLogin.getFoto().isEmpty()) { // caso o usuario informe a foto, será inserida por update, por conta de não ser obrigatória, e menos manutenção
 			
 			sql = "UPDATE users SET fotouser=?, fotouser_extensao =?, WHERE login = ?";
+			
 			statement = connection.prepareStatement(sql);
 			statement.setString(1, modelLogin.getFoto());
 			statement.setString(2, modelLogin.getFotoextensao());
@@ -67,7 +68,8 @@ public class UserDAO {
 			
 			if (modelLogin.getFoto() != null && !modelLogin.getFoto().isEmpty()) {
 				
-				sql = "UPDATE users SET fotouser=?, fotouser_extensao =?, WHERE id = ?";
+				sql = "UPDATE users SET fotouser=?, fotouser_extensao=? WHERE id=?";
+				
 				statement = connection.prepareStatement(sql);
 				statement.setString(1, modelLogin.getFoto());
 				statement.setString(2, modelLogin.getFotoextensao());
