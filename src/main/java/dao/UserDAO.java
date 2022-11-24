@@ -37,13 +37,13 @@ public class UserDAO {
 		statement.execute();
 		connection.commit();
 		
-		if (modelLogin.getFoto() != null && !modelLogin.getFoto().isEmpty()) { // caso o usuario informe a foto, será inserida por update, por conta de não ser obrigatória, e menos manutenção
+		if (modelLogin.getFotouser() != null && !modelLogin.getFotouser().isEmpty()) { // caso o usuario informe a foto, será inserida por update, por conta de não ser obrigatória, e menos manutenção
 			
 			sql = "UPDATE users SET fotouser=?, fotouser_extensao=? WHERE login=?";
 			
 			statement = connection.prepareStatement(sql);
-			statement.setString(1, modelLogin.getFoto());
-			statement.setString(2, modelLogin.getFotoextensao());
+			statement.setString(1, modelLogin.getFotouser());
+			statement.setString(2, modelLogin.getFotouser_extensao());
 			statement.setString(3, modelLogin.getLogin());
 				
 			statement.execute();
@@ -66,13 +66,13 @@ public class UserDAO {
 			statement.executeUpdate();			
 			connection.commit();
 			
-			if (modelLogin.getFoto() != null && !modelLogin.getFoto().isEmpty()) {
+			if (modelLogin.getFotouser() != null && !modelLogin.getFotouser().isEmpty()) {
 				
 				sql = "UPDATE users SET fotouser=?, fotouser_extensao=? WHERE id=?";
 				
 				statement = connection.prepareStatement(sql);
-				statement.setString(1, modelLogin.getFoto());
-				statement.setString(2, modelLogin.getFotoextensao());
+				statement.setString(1, modelLogin.getFotouser());
+				statement.setString(2, modelLogin.getFotouser_extensao());
 				statement.setLong(3, modelLogin.getId());
 					
 				statement.execute();
@@ -155,6 +155,7 @@ public class UserDAO {
 			modelLogin.setEmail(result.getString("email"));
 			modelLogin.setPerfil(result.getString("perfil"));
 			modelLogin.setSexo(result.getString("sexo"));
+			modelLogin.setFotouser(result.getString("fotouser"));
 		}
 		
 		return modelLogin;
@@ -178,6 +179,7 @@ public class UserDAO {
 				modelLogin.setEmail(result.getString("email"));
 				modelLogin.setPerfil(result.getString("perfil"));
 				modelLogin.setSexo(result.getString("sexo"));
+				modelLogin.setFotouser(result.getString("fotouser"));
 			}
 			
 			return modelLogin;
@@ -202,6 +204,7 @@ public class UserDAO {
 			modelLogin.setUseradmin(result.getBoolean("useradmin"));
 			modelLogin.setPerfil(result.getString("perfil"));
 			modelLogin.setSexo(result.getString("sexo"));
+			modelLogin.setFotouser(result.getString("fotouser"));
 		}
 		
 		return modelLogin;
@@ -227,6 +230,7 @@ public class UserDAO {
 				modelLogin.setEmail(result.getString("email"));
 				modelLogin.setPerfil(result.getString("perfil"));
 				modelLogin.setSexo(result.getString("sexo"));
+				modelLogin.setFotouser(result.getString("fotouser"));
 			}
 			
 			return modelLogin;
