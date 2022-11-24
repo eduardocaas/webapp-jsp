@@ -148,14 +148,19 @@ public class ServletUsuario extends /*HttpServlet*/ ServletGenericUtil { // http
 		
 		if (ServletFileUpload.isMultipartContent(request)) { // intercepta arquivos
 			
+			
+			
 			Part part = request.getPart("imgFile"); // pega foto da tela, pelo name
-			byte[] imgFileByte = IOUtils.toByteArray(part.getInputStream()); // converte imagem convertida para byte, IOUtils Apache Commons
-			String imgFileBase64 = "data:image/" + part.getContentType().split("\\/")[1] + ";base64," + new Base64().encodeBase64String(imgFileByte); // converte imagem para base64 recebendo um byte , padrão para html ler imagem, Apache Codec Base 64
-			// exemplo de arquivo gerado: data:image/png;base64,ivBORw0RKgoAAAAnUhEg
 			
-			modelLogin.setFoto(imgFileBase64); // foto base64
-			modelLogin.setFotoextensao(part.getContentType().split("\\/")[1]); // extensão da foto, split pegar apenas extensao da imagem, identificando pela barra
+			if(part.getSize() > 0) { // evitar que ao não informar nenhum arquivo, ocorra a concatenação e o envio incompleto de file64 -> extensão
 			
+				byte[] imgFileByte = IOUtils.toByteArray(part.getInputStream()); // converte imagem convertida para byte, IOUtils Apache Commons
+				String imgFileBase64 = "data:image/" + part.getContentType().split("\\/")[1] + ";base64," + new Base64().encodeBase64String(imgFileByte); // converte imagem para base64 recebendo um byte , padrão para html ler imagem, Apache Codec Base 64
+				// exemplo de arquivo gerado: data:image/png;base64,ivBORw0RKgoAAAAnUhEg
+				
+				modelLogin.setFotouser(imgFileBase64); // foto base64
+				modelLogin.setFotouser_extensao(part.getContentType().split("\\/")[1]); // extensão da foto, split pegar apenas extensao da imagem, identificando pela barra
+			}
 		}
 		
 		if (userDAO.loginValidate(modelLogin.getLogin()) && modelLogin.getId() == null) { // se já existe o login, e estou tentando gravar um novo usuário (não conflitar com update)
