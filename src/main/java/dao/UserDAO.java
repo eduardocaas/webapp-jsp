@@ -231,6 +231,7 @@ public class UserDAO {
 				modelLogin.setPerfil(result.getString("perfil"));
 				modelLogin.setSexo(result.getString("sexo"));
 				modelLogin.setFotouser(result.getString("fotouser"));
+				modelLogin.setFotouser_extensao(result.getString("fotouser_extensao"));
 			}
 			
 			return modelLogin;

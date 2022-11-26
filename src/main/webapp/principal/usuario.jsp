@@ -55,7 +55,9 @@
                                                             <div class="form-group form-default input-group mb-4">
                                                             	<div class="input-group-prepend">
                                                             		<c:if test="${modelLogin.fotouser != '' && modelLogin.fotouser != null}"> <!-- carrega foto na tela, apos inserção ou busca -->
-                                                            			<img alt="Imagem Usuario" id="imgBase64" src="${modelLogin.fotouser}" width="70px">
+                                                            			<a href="<%= request.getContextPath() %>/ServletUsuario?act=downloadUserImage&id=${modelLogin.id}">
+                                                            				<img alt="Imagem Usuario" id="imgBase64" src="${modelLogin.fotouser}" width="70px">
+                                                            			</a>
                                                             		</c:if>
                                                             		<c:if test="${modelLogin.fotouser == '' || modelLogin.fotouser == null}"> <!-- se não tiver foto, usuario novo -->
                                                             			<img alt="Imagem Usuario" id="imgBase64" src="<%= request.getContextPath() %>/assets/images/faq_man.png" width="70px"> <!-- https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png -->

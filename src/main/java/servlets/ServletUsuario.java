@@ -99,6 +99,21 @@ public class ServletUsuario extends /*HttpServlet*/ ServletGenericUtil { // http
 				
 			}
 			
+			else if (act != null && !act.isEmpty() && act.equalsIgnoreCase("downloadUserImage")) { // download da imagem do usuario na tela
+				
+				String idUser = request.getParameter("id");
+				ModelLogin modelLogin = userDAO.searchUserID(idUser, super.getUserLogado(request));
+				
+				if (modelLogin.getFotouser() != null && !modelLogin.getFotouser().isEmpty()) {
+					
+					response.setHeader("Content-Disposition", "attachment;filename=arquivo." + modelLogin.getFotouser_extensao()); // resposta, content-disposition -> navegador identificar download
+					response.getOutputStream().write(new Base64().decodeBase64(modelLogin.getFotouser().split("\\,")[1])); // bytes da foto, decodifica, split -> pega apenas após 'base64,'
+					
+				}
+				
+				
+			}
+			
 			else {
 				
 				List<ModelLogin> modelLoginList = userDAO.returnUserList(super.getUserLogado(request)); // recarregar tabela novamente
