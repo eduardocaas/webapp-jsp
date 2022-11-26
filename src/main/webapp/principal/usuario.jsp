@@ -139,6 +139,42 @@
                                                             </div>
                                                             
                                                             <div class="form-group form-info">
+                                                                <input onblur="searchCep();" type="text" name="cep" id="cep" class="form-control" required="required" autocomplete="off" value="${modelLogin.cep}"> <!-- onblur, quando sai do foco -->
+                                                                <span class="form-bar"></span>
+                                                                <label class="float-label">CEP</label>
+                                                            </div>
+                                                            
+                                                            <div class="form-group form-info">
+                                                                <input type="text" name="logradouro" id="logradouro" class="form-control" required="required" autocomplete="off" value="${modelLogin.logradouro}">
+                                                                <span class="form-bar"></span>
+                                                                <label class="float-label">Logradouro</label>
+                                                            </div>
+                                                            
+                                                            <div class="form-group form-info">
+                                                                <input type="text" name="bairro" id="bairro" class="form-control" required="required" autocomplete="off" value="${modelLogin.bairro}">
+                                                                <span class="form-bar"></span>
+                                                                <label class="float-label">Bairro</label>
+                                                            </div>
+                                                            
+                                                            <div class="form-group form-info">
+                                                                <input type="text" name="localidade" id="localidade" class="form-control" required="required" autocomplete="off" value="${modelLogin.localidade}">
+                                                                <span class="form-bar"></span>
+                                                                <label class="float-label">Cidade</label>
+                                                            </div>
+                                                            
+                                                            <div class="form-group form-info">
+                                                                <input type="text" name="uf" id="uf" class="form-control" required="required" autocomplete="off" value="${modelLogin.uf}">
+                                                                <span class="form-bar"></span>
+                                                                <label class="float-label">UF</label>
+                                                            </div>
+                                                            
+                                                            <div class="form-group form-info">
+                                                                <input type="text" name="numero" id="numero" class="form-control" required="required" autocomplete="off" value="${modelLogin.numero}">
+                                                                <span class="form-bar"></span>
+                                                                <label class="float-label">Número</label>
+                                                            </div>
+                                                            
+                                                            <div class="form-group form-info">
                                                                 <input type="text" name="login" id="login" class="form-control" required="required" autocomplete="off" value="${modelLogin.login}">
                                                                 <span class="form-bar"></span>
                                                                 <label class="float-label">Login</label>
@@ -329,6 +365,10 @@
 			
 		}
 		
+	}
+	
+	function searchCep() {
+		var cep = $("#cep").val();
 	}
 	
 	function viewUser(id){
