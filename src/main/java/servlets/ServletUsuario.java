@@ -143,13 +143,19 @@ public class ServletUsuario extends /*HttpServlet*/ ServletGenericUtil { // http
 			
 		String msg = "Operação realizada com sucesso!";
 		
-		String id = request.getParameter("id");
+		String id = request.getParameter("id"); // name no html - input
 		String nome = request.getParameter("nome");
 		String login = request.getParameter("login");
 		String email = request.getParameter("email");
 		String senha = request.getParameter("senha");
 		String perfil = request.getParameter("perfil");
 		String sexo = request.getParameter("sexo");
+		String cep = request.getParameter("cep");
+		String logradouro = request.getParameter("logradouro");
+		String bairro = request.getParameter("bairro");
+		String localidade = request.getParameter("localidade");
+		String uf = request.getParameter("uf");
+		String numero = request.getParameter("numero");
 		
 		ModelLogin modelLogin = new ModelLogin();
 		
@@ -160,6 +166,12 @@ public class ServletUsuario extends /*HttpServlet*/ ServletGenericUtil { // http
 		modelLogin.setSenha(senha);
 		modelLogin.setPerfil(perfil);
 		modelLogin.setSexo(sexo);
+		modelLogin.setCep(cep);
+		modelLogin.setLogradouro(logradouro);
+		modelLogin.setBairro(bairro);
+		modelLogin.setLocalidade(localidade);
+		modelLogin.setUf(uf);
+		modelLogin.setNumero(numero);
 		
 		if (ServletFileUpload.isMultipartContent(request)) { // intercepta arquivos
 			

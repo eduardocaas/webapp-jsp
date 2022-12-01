@@ -87,7 +87,7 @@
 																 
 																  if (modelLogin != null && modelLogin.getPerfil().equals("ADMIN")) {
 																	  out.print(" ");
-																	  out.print("selected=\"selected\" ");
+																	  out.print("selected=\"selected\" "); // 
 																	  out.print(" ");																	  
 																  }%> >Admin</option>  <!-- enum -->
 																  <option value="AUXILIAR" <%
@@ -369,6 +369,19 @@
 	
 	function searchCep() {
 		var cep = $("#cep").val();
+		
+		$.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?" , function (dados) { // url do json
+			
+			if (!("erro" in dados)) {
+                //Atualiza os campos com os valores da consulta.
+                $("#logradouro").val(dados.logradouro);
+                $("#bairro").val(dados.bairro);
+                $("#localidade").val(dados.localidade);
+                $("#uf").val(dados.uf);
+
+            }
+			
+		});
 	}
 	
 	function viewUser(id){
