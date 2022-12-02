@@ -98,11 +98,37 @@ public class UserDAO {
 			
 	}
 	
+	public List<ModelLogin> returnUserListPAGINATED(Long userLogado, Integer offset) throws Exception { // listar usuário, ao acessar pag jsp -- lista paginada com offset e limit
+		
+		List<ModelLogin> modelLogins = new ArrayList<ModelLogin>();
+		
+		String sql = "SELECT * FROM users WHERE useradmin = FALSE AND user_cadastro_id = " + userLogado + "ORDER BY id OFFSET " + offset + " LIMIT 5";  // OFFSET - colunas LIMIT - limite de resultados, para não carregar tudo de uma vez 
+																																				// ex: offset 5 limit 5 -> a partir da coluna 5 , trazendo 5 resultados, tipo paginas 1, 2 ,3, 4
+		PreparedStatement statement = connection.prepareStatement(sql);
+		ResultSet result = statement.executeQuery();
+		
+		while (result.next()) {
+			
+			ModelLogin modelLogin = new ModelLogin();
+			modelLogin.setId(result.getLong("id"));
+			modelLogin.setLogin(result.getString("login"));
+			// modelLogin.setSenha(result.getString("senha"));
+			modelLogin.setNome(result.getString("nome"));
+			modelLogin.setEmail(result.getString("email"));
+			
+			modelLogins.add(modelLogin);
+			
+		}
+		
+		return modelLogins;
+		
+	}
+	
 	public List<ModelLogin> returnUserList(Long userLogado) throws Exception { // listar usuário, ao acessar pag jsp
 			
 			List<ModelLogin> modelLogins = new ArrayList<ModelLogin>();
 			
-			String sql = "SELECT * FROM users WHERE useradmin = FALSE AND user_cadastro_id = " + userLogado + " ORDER BY id";
+			String sql = "SELECT * FROM users WHERE useradmin = FALSE AND user_cadastro_id = " + userLogado + "ORDER BY id LIMIT 5";  // limita em 5 (muitas buscas) não carregar tudo de uma vez
 			PreparedStatement statement = connection.prepareStatement(sql);
 			ResultSet result = statement.executeQuery();
 			
@@ -127,7 +153,7 @@ public class UserDAO {
 		
 		List<ModelLogin> modelLogins = new ArrayList<ModelLogin>();
 		
-		String sql = "SELECT * FROM users WHERE UPPER(nome) LIKE UPPER(?) AND useradmin = FALSE AND user_cadastro_id = ? ORDER BY nome";
+		String sql = "SELECT * FROM users WHERE UPPER(nome) LIKE UPPER(?) AND useradmin = FALSE AND user_cadastro_id = ? ORDER BY nome LIMIT 5"; // limita em 5 (muitas buscas) não carregar tudo de uma vez
 		PreparedStatement statement = connection.prepareStatement(sql);
 		statement.setString(1, "%" + name + "%");
 		statement.setLong(2, userLogado);
