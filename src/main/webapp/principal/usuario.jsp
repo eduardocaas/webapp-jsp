@@ -218,6 +218,25 @@
 												</tbody>
 											</table>
 										</div>
+										
+										<nav aria-label="Page navigation example">
+										  <ul class="pagination">
+										  
+										  	<%
+										  	
+										  	int totalPages = (int) request.getAttribute("totalPages");
+										  	
+										  	for (int p = 0; p < totalPages; p++){
+										  		String url = request.getContextPath() + "/ServletUsuario?act=pagination&page=" + (p*5); // o p é o offset, de 5 em 5, -> 0 * 5 de 0 a 5 ...
+										  		out.print(" <li class=\"page-item\"><a class=\"page-link\" href=\"" + url + "\">" + (p+1) + "</a></li>"); // barra -> não dar erro com aspas
+										  	}
+										  	
+										  	%>
+										  
+										   
+										  </ul>
+										</nav>
+										
 									</div>
 									<!-- Page-body end -->
                                 </div>

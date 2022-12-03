@@ -46,7 +46,7 @@ public class ServletUsuario extends /*HttpServlet*/ ServletGenericUtil { // http
 				
 				List<ModelLogin> modelLoginList = userDAO.returnUserList(super.getUserLogado(request)); // recarregar tabela novamente
 				request.setAttribute("modelLoginList", modelLoginList); 
-				
+				request.setAttribute("totalPages", userDAO.totalPage(this.getUserLogado(request))); // seta atributo de total de páginas antes de redirecionamento
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 				
 				
@@ -83,6 +83,7 @@ public class ServletUsuario extends /*HttpServlet*/ ServletGenericUtil { // http
 				request.setAttribute("modelLoginList", modelLoginList); 
 				
 				request.setAttribute("modelLogin", modelLogin);
+				request.setAttribute("totalPages", userDAO.totalPage(this.getUserLogado(request))); //
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 				
 				
@@ -95,6 +96,7 @@ public class ServletUsuario extends /*HttpServlet*/ ServletGenericUtil { // http
 				
 				request.setAttribute("msg", "Usuários carregados");
 				request.setAttribute("modelLoginList", modelLoginList);  // parametro a ser usado dentro do jsp, apenas modelLogin é do form
+				request.setAttribute("totalPages", userDAO.totalPage(this.getUserLogado(request))); 
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response); // carrega os usuários e envia para tela
 				
 			}
@@ -114,11 +116,23 @@ public class ServletUsuario extends /*HttpServlet*/ ServletGenericUtil { // http
 				
 			}
 			
+			else if (act != null && !act.isEmpty() && act.equalsIgnoreCase("pagination")) { 
+				
+				Integer offset = Integer.parseInt(request.getParameter("page")); // parametro definido na url no jsp, offset -> qntd de páginas vezes 5
+				
+				List<ModelLogin> modelLogins = userDAO.returnUserListPAGINATED(this.getUserLogado(request), offset);
+				
+				request.setAttribute("modelLoginList", modelLogins); 
+				request.setAttribute("totalPages", userDAO.totalPage(this.getUserLogado(request))); 
+				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+				
+			}
+			
 			else {
 				
 				List<ModelLogin> modelLoginList = userDAO.returnUserList(super.getUserLogado(request)); // recarregar tabela novamente
 				request.setAttribute("modelLoginList", modelLoginList); 
-				
+				request.setAttribute("totalPages", userDAO.totalPage(this.getUserLogado(request))); 
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 				
 				
@@ -212,6 +226,7 @@ public class ServletUsuario extends /*HttpServlet*/ ServletGenericUtil { // http
 		
 		request.setAttribute("msg", msg);
 		request.setAttribute("modelLogin", modelLogin); // manter os dados na tela ao enviar formulario, definido também value padrão no jsp usuario
+		request.setAttribute("totalPages", userDAO.totalPage(this.getUserLogado(request)));
 		request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 			
 		} catch (Exception e) {

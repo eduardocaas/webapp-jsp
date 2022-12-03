@@ -102,7 +102,7 @@ public class UserDAO {
 		
 		List<ModelLogin> modelLogins = new ArrayList<ModelLogin>();
 		
-		String sql = "SELECT * FROM users WHERE useradmin = FALSE AND user_cadastro_id = " + userLogado + "ORDER BY id OFFSET " + offset + " LIMIT 5";  // OFFSET - colunas LIMIT - limite de resultados, para não carregar tudo de uma vez 
+		String sql = "SELECT * FROM users WHERE useradmin = FALSE AND user_cadastro_id = " + userLogado + " OFFSET " + offset + " LIMIT 5";  // OFFSET - colunas LIMIT - limite de resultados, para não carregar tudo de uma vez 
 																																				// ex: offset 5 limit 5 -> a partir da coluna 5 , trazendo 5 resultados, tipo paginas 1, 2 ,3, 4
 		PreparedStatement statement = connection.prepareStatement(sql);
 		ResultSet result = statement.executeQuery();
@@ -124,11 +124,31 @@ public class UserDAO {
 		
 	}
 	
+	public int totalPage(Long userLogado) throws Exception { // retorna o total de páginas por registro com limit 
+		
+		String sql = "SELECT COUNT(1) AS total FROM users WHERE user_cadastro_id = " + userLogado; // pega apenas os registro em que o usuario logado for o mesmo da coluna cadastro
+		PreparedStatement statement = connection.prepareStatement(sql);
+		ResultSet result = statement.executeQuery();
+		result.next();
+		
+		Double cadastros = result.getDouble("total");
+		Double registrosPagina = 5.0;
+		Double pagina = cadastros / registrosPagina;
+		Double resto = pagina % 2.0;
+		
+		if (resto > 0) {
+			pagina++;
+		}
+		
+		return pagina.intValue(); // retorna quantas página terão para comportar os registros ex: 11 registros -> 3 páginas
+		
+	}
+	
 	public List<ModelLogin> returnUserList(Long userLogado) throws Exception { // listar usuário, ao acessar pag jsp
 			
 			List<ModelLogin> modelLogins = new ArrayList<ModelLogin>();
 			
-			String sql = "SELECT * FROM users WHERE useradmin = FALSE AND user_cadastro_id = " + userLogado + "ORDER BY id LIMIT 5";  // limita em 5 (muitas buscas) não carregar tudo de uma vez
+			String sql = "SELECT * FROM users WHERE useradmin = FALSE AND user_cadastro_id = " + userLogado + " LIMIT 5";  // limita em 5 (muitas buscas) não carregar tudo de uma vez
 			PreparedStatement statement = connection.prepareStatement(sql);
 			ResultSet result = statement.executeQuery();
 			
