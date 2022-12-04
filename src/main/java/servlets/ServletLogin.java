@@ -67,6 +67,7 @@ public class ServletLogin extends HttpServlet {
 					modelLogin = userDAO.searchUserLogged(login);
 					
 					request.getSession().setAttribute("usuario", modelLogin.getLogin()); // usuario logado na sessão (só salva o login)
+					request.getSession().setAttribute("usuarioImg", modelLogin.getFotouser()); // foto do usuario, ex: para mostrar no navbar
 					request.getSession().setAttribute("isAdmin", modelLogin.getUseradmin()); // para controle de acesso de admins (ex: jsp)
 					request.getSession().setAttribute("perfil", modelLogin.getPerfil());
 					
