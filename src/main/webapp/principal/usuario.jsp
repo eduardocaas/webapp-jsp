@@ -285,13 +285,17 @@
 					  </table>
 					</div>
 				  </div>
-      <div class="modal-footer">
-      	<span id="modalResults"></span>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-      </div>
-    </div>
-  </div>
-</div>    
+			      <div class="modal-footer">
+			      <nav aria-label="Page navigation example">
+					 <ul class="pagination" id="paginationModal">
+					 </ul>
+					</nav>
+			      	<span id="modalResults"></span>
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>    
     
     
 <script type="text/javascript">
@@ -351,20 +355,22 @@
 	function searchUser() {
 		
 		let nameModal = document.getElementById('nameModal').value;
-		let urlAction = document.getElementById('formUser').action;
 		
 		if (nameModal != null && nameModal != '' && nameModal.trim() != ''){ // validando se tem valor para fazer busca no banco
-
+			
+			let urlAction = document.getElementById('formUser').action;
+			
 			$.ajax({
 				
 				method: "get", // cai no get no servlet
 				url: urlAction,
 				data: "nameModal=" + nameModal + '&act=searchUserAjax',
-				success: function (response) {
+				success: function (response, textStatus, xhr) { // xhr -> pega dados do cabeçalho
 					
 					let json = JSON.parse(response); // converte pra JSON
 				
 					$('#modalTable > tbody > tr').remove(); // remove todas as linhas antes da consulta, para limpar a tabela
+					$('#paginationModal > li').remove(); // remove a paginação da pesquisa anterior
 					
 					for(let i = 0; i < json.length; i++){
 						
@@ -373,6 +379,15 @@
 					}
 					
 					document.getElementById('modalResults').textContent = 'Total de registros: ' + json.length;
+					
+					var totalPage = xhr.getResponseHeader("totalPages"); // header passado na servlet
+
+					for (var p = 0; p < totalPage; p++){
+						
+						var url = '?nameModal=' + nameModal + '&act=searchUserAjaxPAGE&page=' + (p * 5);
+						
+						$("#paginationModal").append('<li class="page-item"><a class="page-link" href="#" onclick="searchUserAjaxPage(' + url + ')">' + (p+1) + '</a></li>');
+					}
 					
 				}
 				
@@ -383,6 +398,48 @@
 			});
 			
 		}
+		
+	}
+	
+	function searchUserAjaxPage(url) {
+		
+		let urlAction = document.getElementById('formUser').action;
+		
+		$.ajax({
+			
+			method: "get", // cai no get no servlet
+			url: urlAction,
+			data: url,
+			success: function (response, textStatus, xhr) { // xhr -> pega dados do cabeçalho
+				
+				let json = JSON.parse(response); // converte pra JSON
+			
+				$('#modalTable > tbody > tr').remove(); // remove todas as linhas antes da consulta, para limpar a tabela
+				$('#paginationModal > li').remove(); // remove a paginação da pesquisa anterior
+				
+				for(let i = 0; i < json.length; i++){
+					
+					$('#modalTable > tbody').append('<tr> <td>' + json[i].id + '</td> <td>' + json[i].nome + '</td> <td><button onclick="viewUser(' + json[i].id + ');" type="button" class="btn btn-info">Ver</button></td> </tr>');									
+					
+				}
+				
+				document.getElementById('modalResults').textContent = 'Total de registros: ' + json.length;
+				
+				var totalPage = xhr.getResponseHeader("totalPages"); // header passado na servlet
+
+				for (var p = 0; p < totalPage; p++){
+					
+					var url = urlAction + '?nameModal=' + nameModal + '&act=searchUserAjaxPAGE&page=' + (p * 5);
+					$("#paginationModal").append('<li class="page-item"><a class="page-link" onclick="searchUserAjaxPage(\'' + url + '\')">' + (p+1) + '</a></li>');
+				}
+				
+			}
+			
+		}).fail(function(xhr, status, errorThrown ) {// caso de erro, xhr traz detalhes do erro, status do erro, errorThrown exceção de erro
+														
+			alert('Erro ao buscar usuário por nome: ' + xhr.responseText);
+			
+		});
 		
 	}
 	

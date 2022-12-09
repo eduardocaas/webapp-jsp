@@ -169,6 +169,31 @@ public class UserDAO {
 			
 		}
 	
+	public int searchUserListTOTAL(String name, Long userLogado) throws Exception { // total de registros da busca -> para offset de paginação ->
+			
+		String sql = "SELECT COUNT(1) as total FROM users WHERE UPPER(nome) LIKE UPPER(?) AND useradmin = FALSE AND user_cadastro_id = ?";
+		
+		PreparedStatement statement = connection.prepareStatement(sql);
+		statement.setString(1, "%" + name + "%");
+		statement.setLong(2, userLogado);
+		ResultSet result = statement.executeQuery();
+		
+		result.next();
+		
+		Double cadastros = result.getDouble("total");
+		Double registrosPagina = 5.0;
+		Double pagina = cadastros / registrosPagina;
+		Double resto = pagina % 2.0;
+		
+		if (resto > 0) {
+			pagina++;
+		}
+		
+		return pagina.intValue();
+
+		
+	}
+	
 	public List<ModelLogin> searchUserList(String name, Long userLogado) throws Exception { // modal
 		
 		List<ModelLogin> modelLogins = new ArrayList<ModelLogin>();

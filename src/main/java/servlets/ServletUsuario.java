@@ -70,9 +70,27 @@ public class ServletUsuario extends /*HttpServlet*/ ServletGenericUtil { // http
 				ObjectMapper mapper = new ObjectMapper();
 				String json = mapper.writeValueAsString(userDataJSON);
 				
+											// retorna inteiro -> concatena com string
+				response.addHeader("totalPages", "" + userDAO.searchUserListTOTAL(nameUser, super.getUserLogado(request))); // enviado separadamente, fora da lista, por cabeçalho, primeiro parametro -> seta atributo
 				response.getWriter().write(json); // resposta com ajax, cai na funcão sucess 
 				
 			}
+			
+			else if (act != null && !act.isEmpty() && act.equalsIgnoreCase("searchUserAjaxPAge")) { // metódo de busca ajax (modal)
+							
+							String nameUser = request.getParameter("nameModal");
+							String page = request.getParameter("page");
+							
+							List<ModelLogin> userDataJSON = userDAO.searchUserList(nameUser, super.getUserLogado(request));
+							
+							ObjectMapper mapper = new ObjectMapper();
+							String json = mapper.writeValueAsString(userDataJSON);
+							
+														// retorna inteiro -> concatena com string
+							response.addHeader("totalPages", "" + userDAO.searchUserListTOTAL(nameUser, super.getUserLogado(request))); // enviado separadamente, fora da lista, por cabeçalho, primeiro parametro -> seta atributo
+							response.getWriter().write(json); // resposta com ajax, cai na funcão sucess 
+							
+						}
 			
 			else if (act != null && !act.isEmpty() && act.equalsIgnoreCase("viewModalUser")) {
 				String id = request.getParameter("id");
